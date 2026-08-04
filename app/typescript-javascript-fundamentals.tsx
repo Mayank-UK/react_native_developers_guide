@@ -1,11 +1,11 @@
-import { TsJsFundamentalsScreen } from '../src/ui/screens/ts-js-fundamentals-screen';
+import { TsJsFundamentalsView } from '../src/ui/views/ts_js_fundamentals/ts_js_fundamentals_view';
 
 /**
  * TypeScript & JavaScript Fundamentals route — Expo Router file for
- * `/typescript-javascript-fundamentals`. The screen component itself lives
- * under `src/ui/screens/` so it mirrors the screen-vs-route convention and
- * stays testable in isolation.
+ * `/typescript-javascript-fundamentals`. The view (dumb UI) + its hooks
+ * (logic) + spec live under `src/ui/views/ts_js_fundamentals/`, mirroring
+ * react_developers_guide.
  */
 export default function Route() {
-  return <TsJsFundamentalsScreen />;
+  return <TsJsFundamentalsView />;
 }

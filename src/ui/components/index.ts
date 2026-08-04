@@ -7,3 +7,4 @@ export { Code } from './code';
 export { Pill } from './pill';
 export { LinkCard } from './link-card';
 export { ThemeToggle } from './theme-toggle';
+export { AppDrawerContent } from './drawer-content';

@@ -7,7 +7,7 @@ import { ThemeProvider, useTheme } from '../src/ui/design-system';
 import { useAppFonts } from '../src/ui/design-system/fonts';
 import { container } from '../src/core/container';
 import { createAppConfig } from '../src/core/config';
-import { AppDrawerContent } from '../src/ui/navigation/drawer-content';
+import { AppDrawerContent } from '../src/ui/components';
 
 /**
  * Root layout — wires global providers (theme, safe-area, gesture handler) and

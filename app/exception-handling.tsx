@@ -1,10 +1,10 @@
-import { ExceptionHandlingScreen } from '../src/ui/screens/exception-handling-screen';
+import { ExceptionHandlingView } from '../src/ui/views/exception_handling/exception_handling_view';
 
 /**
  * Exception Handling route — Expo Router file for `/exception-handling`.
- * The screen component lives under `src/ui/screens/` so it mirrors the
- * topic-screen convention and stays testable in isolation.
+ * The view (dumb UI) + its hooks (logic) + spec live under
+ * `src/ui/views/exception_handling/`, mirroring react_developers_guide.
  */
 export default function Route() {
-  return <ExceptionHandlingScreen />;
+  return <ExceptionHandlingView />;
 }

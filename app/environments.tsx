@@ -1,10 +1,10 @@
-import { EnvironmentsScreen } from '../src/ui/screens/environments-screen';
+import { EnvironmentsView } from '../src/ui/views/environments/environments_view';
 
 /**
- * Environments route — Expo Router file for `/environments`. The screen
- * component lives under `src/ui/screens/` per the topic-screen convention and
- * stays testable in isolation.
+ * Environments route — Expo Router file for `/environments`. The view (dumb UI)
+ * + its hooks (logic) + spec live under `src/ui/views/environments/`, mirroring
+ * react_developers_guide.
  */
 export default function Route() {
-  return <EnvironmentsScreen />;
+  return <EnvironmentsView />;
 }

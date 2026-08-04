@@ -14,8 +14,9 @@ export default function HubScreen() {
   const items = ROUTES.filter(
     (r) =>
       r.path !== RoutePaths.about &&
-      // keep the `/ui` hub, drop its sub-screens (`/ui/...`)
-      !(r.path !== RoutePaths.ui && r.path.startsWith('/ui/')),
+      // keep section hubs, drop their sub-screens (`/ui/...`, `/state-management/...`)
+      !(r.path !== RoutePaths.ui && r.path.startsWith('/ui/')) &&
+      !(r.path !== RoutePaths.stateManagement && r.path.startsWith('/state-management/')),
   );
 
   return (

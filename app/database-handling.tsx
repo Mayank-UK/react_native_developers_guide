@@ -1,10 +1,10 @@
-import { DatabaseHandlingScreen } from '../src/ui/screens/database-handling-screen';
+import { DatabaseHandlingView } from '../src/ui/views/database_handling/database_handling_view';
 
 /**
  * Database Handling route — Expo Router file for `/database-handling`.
- * The screen component lives under `src/ui/screens/` so it mirrors the
- * topic-screen convention and stays testable in isolation.
+ * The view lives under `src/ui/views/database_handling/` (logic↔UI separation;
+ * see exception_handling for the convention).
  */
 export default function Route() {
-  return <DatabaseHandlingScreen />;
+  return <DatabaseHandlingView />;
 }

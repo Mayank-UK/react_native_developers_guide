@@ -7,7 +7,7 @@ module.exports = {
   // setupFilesAfterEnv runs after the framework is ready (beforeEach exists).
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|react-native-reanimated)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|react-native-reanimated|react-redux|@reduxjs/toolkit|@tanstack/react-query|zustand|immer|reselect|redux|use-sync-external-store)',
   ],
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
 };

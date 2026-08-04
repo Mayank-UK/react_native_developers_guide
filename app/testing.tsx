@@ -1,10 +1,10 @@
-import { TestingScreen } from '../src/ui/screens/testing-screen';
+import { TestingView } from '../src/ui/views/testing/testing_view';
 
 /**
- * Testing route — Expo Router file for `/testing`. The screen component lives
- * under `src/ui/screens/` per the topic-screen convention and stays testable in
- * isolation.
+ * Testing route — Expo Router file for `/testing`. The view lives under
+ * `src/ui/views/testing/` per the view/hooks/spec convention and stays testable
+ * in isolation.
  */
 export default function Route() {
-  return <TestingScreen />;
+  return <TestingView />;
 }

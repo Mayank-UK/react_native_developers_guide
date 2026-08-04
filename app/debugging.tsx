@@ -1,10 +1,10 @@
-import { DebuggingScreen } from '../src/ui/screens/debugging-screen';
+import { DebuggingView } from '../src/ui/views/debugging/debugging_view';
 
 /**
- * Debugging route — Expo Router file for `/debugging`. The screen component
- * lives under `src/ui/screens/` per the topic-screen convention and stays
- * testable in isolation.
+ * Debugging route — Expo Router file for `/debugging`. The view (dumb UI) +
+ * its hooks (logic) + spec live under `src/ui/views/debugging/`, mirroring
+ * react_developers_guide.
  */
 export default function Route() {
-  return <DebuggingScreen />;
+  return <DebuggingView />;
 }

@@ -133,6 +133,31 @@ context (light/dark, persisted in AsyncStorage, falling back to
 `View`), `Button` (variants + pressed state), `Card`. This is the most
 dependency-light, instructive choice.
 
+#### Two component tiers — why `design-system/components` and `ui/components` are separate
+The app deliberately keeps **two** component folders, not one. They are different
+layers with different consumers and should not be collapsed:
+
+- **`ui/design-system/components/`** — **primitives**. The raw, theme-token-backed
+  building blocks (`Text`, `Box`, `Button`, `Card`). They know nothing about the
+  app's domain or screens — only about tokens, typography, spacing, and the theme
+  context. This is the equivalent of a publishable component library: generic,
+  stable, and consumed by *everything* above. They live under `design-system/`
+  because they ARE the design system — inseparable from `tokens.ts` /
+  `theme-provider.tsx`. Putting them in `ui/components` would imply they are
+  app-specific compositions, which they are not.
+- **`ui/components/`** — **app-level composites**. Higher-order components built
+  *on top of* the primitives for this app's screens: `Section`, `Code`, `Pill`,
+  `LinkCard`, `ScreenScaffold`, `ShowError`, `ToastStack`, `ThemeToggle`,
+  `AppDrawerContent`. They encode app conventions (an accent-bar section header,
+  a collapsible code block with copy, a themed drawer) and are free to combine
+  multiple primitives + hooks + domain types. If a component is used by ≥2
+  screens it lives here; if it is used by one screen only it stays a local fn in
+  that view.
+
+Rule of thumb: a primitive answers "what does the theme say this looks like?";
+a composite answers "what does *this app* need on screen?". The dependency arrow
+is one-way — `ui/components` imports from `design-system`, never the reverse.
+
 ### Environments: `app.config.ts` + `EXPO_PUBLIC_*` + EAS profiles
 The web guide resolves env from Vite's `import.meta.env` per `--mode`. Expo's
 standard is `app.config.ts` reading `process.env` (set per EAS build profile via

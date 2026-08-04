@@ -6,7 +6,9 @@
     "erasableSyntaxOnly": true,
     "exactOptionalPropertyTypes": false,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["jest", "node"],
     "paths": {
       "@/*": [
         "./src/*"
@@ -15,7 +17,8 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "**/*.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", ".expo"]
 }

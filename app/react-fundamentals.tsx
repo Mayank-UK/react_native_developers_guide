@@ -1,10 +1,10 @@
-import { ReactFundamentalsScreen } from '../src/ui/screens/react-fundamentals-screen';
+import { ReactFundamentalsView } from '../src/ui/views/react_fundamentals/react_fundamentals_view';
 
 /**
  * React Fundamentals route — Expo Router file for `/react-fundamentals`.
- * The screen component itself lives under `src/ui/screens/` so it mirrors the
- * placeholder-screen convention and stays testable in isolation.
+ * The view (dumb UI) + its hooks (logic) + spec live under
+ * `src/ui/views/react_fundamentals/`, mirroring react_developers_guide.
  */
 export default function Route() {
-  return <ReactFundamentalsScreen />;
+  return <ReactFundamentalsView />;
 }

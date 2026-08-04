@@ -1,10 +1,10 @@
-import { LifecycleScreen } from '../src/ui/screens/lifecycle-screen';
+import { LifecycleView } from '../src/ui/views/lifecycle/lifecycle_view';
 
 /**
  * Lifecycle route — Expo Router file for `/lifecycle`.
- * The screen component lives under `src/ui/screens/` so it mirrors the
- * topic-screen convention and stays testable in isolation.
+ * The view lives under `src/ui/views/lifecycle/` per the view/hooks/spec
+ * convention and stays testable in isolation.
  */
 export default function Route() {
-  return <LifecycleScreen />;
+  return <LifecycleView />;
 }

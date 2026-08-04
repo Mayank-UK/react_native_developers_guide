@@ -1,5 +1,5 @@
 import { useGlobalSearchParams } from 'expo-router';
-import { PlaceholderScreen } from '../src/ui/screens/placeholder-screen';
+import { PlaceholderView } from '../src/ui/views/placeholder/placeholder_view';
 
 /**
  * Catch-all for not-yet-built topic routes. Every hub path that doesn't have a
@@ -10,7 +10,7 @@ export default function CatchAllScreen() {
   const params = useGlobalSearchParams<{ rest: string | string[] }>();
   const slug = Array.isArray(params.rest) ? params.rest[0] : params.rest;
   const title = prettify(slug);
-  return <PlaceholderScreen title={title} />;
+  return <PlaceholderView title={title} />;
 }
 
 function prettify(slug: string | undefined): string {

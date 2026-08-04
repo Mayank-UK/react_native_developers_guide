@@ -1,10 +1,10 @@
-import { BestPracticesScreen } from '../src/ui/screens/best-practices-screen';
+import { BestPracticesView } from '../src/ui/views/best_practices/best_practices_view';
 
 /**
- * Best Practices route — Expo Router file for `/best-practices`. The screen
- * component lives under `src/ui/screens/` per the topic-screen convention and
+ * Best Practices route — Expo Router file for `/best-practices`. The view lives
+ * under `src/ui/views/best_practices/` per the view/hooks/spec convention and
  * stays testable in isolation.
  */
 export default function Route() {
-  return <BestPracticesScreen />;
+  return <BestPracticesView />;
 }
