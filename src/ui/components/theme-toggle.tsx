@@ -1,5 +1,6 @@
 import { Pressable } from 'react-native';
-import { Text, useTheme } from '../design-system';
+import { Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * ThemeToggle — a single tappable icon for the header that flips light/dark.

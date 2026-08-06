@@ -33,6 +33,7 @@
     "expo-notifications": "~0.31.5",
     "expo-router": "~5.1.0",
     "expo-secure-store": "~14.2.4",
+    "expo-sensors": "~14.1.4",
     "expo-status-bar": "~2.2.0",
     "i18n-js": "^4.5.3",
     "react": "19.0.0",

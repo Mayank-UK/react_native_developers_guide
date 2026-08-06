@@ -1,5 +1,6 @@
 import { Pressable } from 'react-native';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 import type { ToastEntry } from '../hooks/use-failure-toast';
 
 /**

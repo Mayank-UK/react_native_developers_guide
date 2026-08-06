@@ -1,6 +1,7 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Text } from '../../design-system';
+import { Box, Text } from '../../components';
 import { Section, Code, Pill } from '../../components';
+import { useTheme } from '../../design-system';
 import {
   useBuildPlayground,
   releaseChecklist,
@@ -26,7 +27,6 @@ export function BuildDeploymentView() {
   return (
     <ScreenScaffold
       title="Build & Deployment"
-      subtitle="From `expo start` to a shippable binary — EAS Build/Submit, signing, OTA updates, store release."
     >
       <PipelineCard />
       <BuildProfilesCard />
@@ -429,9 +429,9 @@ function ChecklistCard() {
     >
       <Box gap="xs">
         {steps.map((s) => (
-          <Box key={s.order} p="sm" radius="sm" bg="surfaceVariant" row gap="sm">
-            <Pill tone="primary" label={'step ' + String(s.order)} value={s.title} />
-            <Box flex={1}>
+          <Box key={s.order} p="sm" radius="sm" bg="surfaceVariant" row gap="sm" style={{ alignItems: 'flex-start' }}>
+            <StepBadge order={s.order} />
+            <Box flex={1} style={{ flexShrink: 1 }}>
               <Text variant="small" style={{ fontWeight: '600' }}>
                 {s.title}
               </Text>
@@ -449,6 +449,35 @@ function ChecklistCard() {
 /* ------------------------------------------------------------------ */
 /* Local presentational helper (single-file, no export).               */
 /* ------------------------------------------------------------------ */
+
+/**
+ * Fixed-size "step N" badge for the release checklist. Deliberately a
+ * fixed-width pill (not a flex-growing container) so the badge stays the same
+ * size regardless of how long the sibling title/detail text is — that was the
+ * bug: a `<Pill label value=...>` placed the long title INSIDE the badge, so
+ * every step's chip grew wider. Now the badge holds ONLY "step N" and the long
+ * text lives in a separate flex sibling.
+ */
+function StepBadge({ order }: { order: number }) {
+  const { theme } = useTheme();
+  return (
+    <Box
+      center
+      radius="full"
+      px="sm"
+      py="xxs"
+      style={{
+        backgroundColor: theme.colors.primary,
+        minWidth: 64,
+        alignSelf: 'flex-start',
+      }}
+    >
+      <Text variant="caption" tone="onPrimary" style={{ fontWeight: '700' }}>
+        {'step ' + String(order)}
+      </Text>
+    </Box>
+  );
+}
 
 function KvRow({ k, v }: { k: string; v: string }) {
   return (

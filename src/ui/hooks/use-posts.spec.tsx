@@ -86,7 +86,9 @@ describe('usePosts', () => {
     });
     if (result.current.state.status === 'loaded') {
       expect(result.current.state.warning).toBeDefined();
-      expect(result.current.state.warning?.severity).toBe(FailureSeverity.Critical);
+      // Served-from-cache: the upstream failure is downgraded to a non-blocking
+      // Warning so severity matches how it is presented (toast), not Critical.
+      expect(result.current.state.warning?.severity).toBe(FailureSeverity.Warning);
     }
   });
 });

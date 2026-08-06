@@ -3,9 +3,11 @@ import { ThemeProvider } from '../../design-system/theme-provider';
 import { InternationalizationView } from './internationalization_view';
 import {
   LOCALES,
+  fallbackPluralCategory,
   formatDemo,
   isRTL,
   pluralize,
+  selectPluralCategory,
   t,
   translate,
   useI18nPlayground,
@@ -108,6 +110,38 @@ describe('pluralize (Intl.PluralRules)', () => {
   it('substitutes the count into the phrase', () => {
     expect(pluralize(3, 'en').text).toBe('3 posts');
     expect(pluralize(1, 'en').text).toBe('1 post');
+  });
+});
+
+describe('fallbackPluralCategory (Hermes path)', () => {
+  // Hermes ships no Intl.PluralRules; the fallback must reproduce CLDR cardinal
+  // categories for the three locales this screen teaches so the live demo and
+  // the category table render identically on-device.
+  it('uses the one/other split for English and Spanish', () => {
+    expect(fallbackPluralCategory('en-US', 1)).toBe('one');
+    expect(fallbackPluralCategory('en-US', 0)).toBe('other');
+    expect(fallbackPluralCategory('en-US', 5)).toBe('other');
+    expect(fallbackPluralCategory('es-ES', 1)).toBe('one');
+    expect(fallbackPluralCategory('es-ES', 3)).toBe('other');
+  });
+
+  it('uses the Arabic six-form rules (zero/one/two/few/many/other)', () => {
+    expect(fallbackPluralCategory('ar-SA', 0)).toBe('zero');
+    expect(fallbackPluralCategory('ar-SA', 1)).toBe('one');
+    expect(fallbackPluralCategory('ar-SA', 2)).toBe('two');
+    expect(fallbackPluralCategory('ar-SA', 5)).toBe('few');
+    expect(fallbackPluralCategory('ar-SA', 15)).toBe('many');
+    expect(fallbackPluralCategory('ar-SA', 100)).toBe('other');
+  });
+
+  it('selectPluralCategory matches fallback output for the taught locales', () => {
+    // Node ships Intl.PluralRules, so selectPluralCategory exercises the real
+    // engine here; assert it agrees with the fallback for every category the
+    // screen displays. (When the engine lacks PluralRules, select == fallback.)
+    for (const count of [0, 1, 2, 3, 5, 11, 15, 100]) {
+      expect(selectPluralCategory('en-US', count)).toBe(fallbackPluralCategory('en-US', count));
+      expect(selectPluralCategory('ar-SA', count)).toBe(fallbackPluralCategory('ar-SA', count));
+    }
   });
 });
 

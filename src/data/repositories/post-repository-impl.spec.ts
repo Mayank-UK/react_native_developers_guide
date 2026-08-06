@@ -26,7 +26,9 @@ describe('PostRepositoryImpl', () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.length).toBe(3);
-      expect(result.value[0]!.title).toBe('Fake post');
+      const first = result.value[0];
+      expect(first).toBeDefined();
+      expect(first?.title).toBe('Fake post');
       expect(result.warning).toBeUndefined();
     }
   });
@@ -46,8 +48,15 @@ describe('PostRepositoryImpl', () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.length).toBe(3);
-      expect(result.warning).toBeInstanceOf(NetworkFailure);
-      expect(result.warning?.severity).toBe(FailureSeverity.Critical);
+      // The upstream NetworkFailure is downgraded to a non-blocking Warning
+      // (served-from-cache): kind and message are preserved (delegated to the
+      // underlying NetworkFailure) but severity reflects the toast
+      // presentation, not the original Critical.
+      expect(result.warning?.kind).toBe('network');
+      expect(result.warning?.severity).toBe(FailureSeverity.Warning);
+      expect(result.warning?.message).toBe(
+        new NetworkFailure().message,
+      );
     }
   });
 

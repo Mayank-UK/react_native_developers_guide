@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { container } from '../../../core/container';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
+import { requireHead } from '../../../core/utils/arrays';
 import { usePosts } from '../../hooks/use-posts';
 
 /**
@@ -78,7 +79,7 @@ export function useLiveToggleDemo() {
 /* ------------------------------------------------------------------ */
 
 export function useResolveInspectorDemo(graphRowNames: ReadonlyArray<{ name: string }>) {
-  const [entry, setEntry] = useState(graphRowNames[0]!.name);
+  const [entry, setEntry] = useState(requireHead(graphRowNames).name);
   const [api, setApiState] = useState(container.getApiScenario());
   const [db, setDbState] = useState(container.getDbScenario());
 

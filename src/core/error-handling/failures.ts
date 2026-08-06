@@ -60,6 +60,46 @@ export abstract class Failure {
     }
     return parts.join('\n');
   }
+
+  /**
+   * Return a view of this failure at a different severity. The cause chain is
+   * preserved BY REFERENCE — it is never copied or recomputed; `message`,
+   * `chain`, `kind`, and `cause` all delegate to the original. Used when an
+   * upstream failure is *presented* at a different severity than its kind
+   * implies — e.g. a Critical `NetworkFailure` served from stale cache is
+   * downgraded to a non-blocking `Warning` so the severity the UI branches on
+   * matches how the failure is actually shown (toast, not full-screen error).
+   */
+  withSeverity(severity: FailureSeverity): Failure {
+    return new SeverityOverrideFailure(this, severity);
+  }
+}
+
+/**
+ * Decorator that presents an underlying failure at a different severity. Only
+ * `severity` is overridden; `kind`, `message`, `chain`, and `cause` delegate to
+ * the wrapped failure, so the cause chain stays intact by reference (no
+ * duplication, no re-mapping). Created via {@link Failure.withSeverity}.
+ */
+class SeverityOverrideFailure extends Failure {
+  readonly kind: FailureKind;
+  readonly severity: FailureSeverity;
+  private readonly original: Failure;
+
+  constructor(original: Failure, severity: FailureSeverity) {
+    super('', original.cause);
+    this.original = original;
+    this.kind = original.kind;
+    this.severity = severity;
+  }
+
+  override get message(): string {
+    return this.original.message;
+  }
+
+  override get chain(): string {
+    return this.original.chain;
+  }
 }
 
 export class NetworkFailure extends Failure {

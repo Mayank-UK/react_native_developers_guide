@@ -3,7 +3,7 @@ import { ScreenScaffold } from '../../components/screen-scaffold';
 import { ShowError } from '../../components/show-error';
 import { ToastStack } from '../../components/toast';
 import { Section, Code } from '../../components';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import { usePosts, isBlocking } from '../../hooks/use-posts';
 import { API_SCENARIOS } from '../../../core/scenario/api-scenario';
 import {
@@ -31,7 +31,6 @@ export function ApiHandlingView() {
   return (
     <ScreenScaffold
       title="API Handling"
-      subtitle="usecase → repository → remote/local → Result — the full pipeline."
     >
       <PipelineCard />
       <DomainContractCard />
@@ -326,12 +325,13 @@ function RepositoryImplCard() {
   }
 
   private async serveFromCache(cause: AppException) {
-    const upstreamFailure = mapExceptionToFailure(cause);
+    const upstreamFailure = mapExceptionToFailure(cause);       // mapped ONCE, reused below
     const cached = await this.local.getPosts();
     if (cached.length > 0) {
-      return success(cached.map(toPost), upstreamFailure);   // non-blocking: data + soft warning
+      // non-blocking: data + Warning (severity lowered to match the toast)
+      return success(cached.map(toPost), upstreamFailure.withSeverity(FailureSeverity.Warning));
     }
-    return forwardNetworkFailure(cause);                      // blocking: nothing to show
+    return forwardNetworkFailure(upstreamFailure);              // blocking: nothing to show
     // (a cache READ failure → chainedCacheFailure: CacheFailure ← NetworkFailure)
   }
 }`}</Code>
@@ -354,8 +354,8 @@ function RepositoryImplCard() {
 
 const RESULT_ROWS: ReadonlyArray<{ shape: string; note: string }> = [
   {
-    shape: 'success(posts, networkFailure)',
-    note: 'Remote failed but a cache was served. The call SUCCEEDS, posts render, and the failure fires a dismissible toast — one value carries data + soft notice.',
+    shape: 'success(posts, networkFailure.withSeverity(Warning))',
+    note: 'Remote failed but a cache was served. The call SUCCEEDS, posts render, and the failure fires a dismissible toast — one value carries data + soft notice. The upstream failure is downgraded to Warning so severity matches the non-blocking presentation.',
   },
   {
     shape: 'failed(networkFailure)',
@@ -491,7 +491,7 @@ function PostsBody({
       data={state.posts}
       scrollEnabled={false}
       renderItem={({ item }) => (
-        <Card style={{ marginBottom: 8 }}>
+        <Card mb="sm">
           <Text variant="small" tone="primary" style={{ fontWeight: '600' }}>
             #{item.id}
           </Text>

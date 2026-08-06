@@ -1,7 +1,7 @@
 import { TextInput } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
 import { Section, Code, Pill } from '../../components';
-import { Box, Button, Text } from '../../design-system';
+import { Box, Button, Text } from '../../components';
 import {
   CACHE_STRATEGIES,
   SYNC_STATE,
@@ -31,7 +31,6 @@ export function OfflineView() {
   return (
     <ScreenScaffold
       title="Offline Support"
-      subtitle="Cache-first strategies, network detection, optimistic UI, background sync."
     >
       <IntroCard />
       <WhyOfflineCard />

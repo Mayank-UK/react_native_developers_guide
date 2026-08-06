@@ -2,7 +2,8 @@ import { useState, type ReactNode } from 'react';
 import { Controller } from 'react-hook-form';
 import { TextInput } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useManualFormDemo,
@@ -25,7 +26,6 @@ export function FormsValidationView() {
   return (
     <ScreenScaffold
       title="Forms & Validation"
-      subtitle="Controlled inputs, schema validation, react-hook-form."
     >
       <WhyDifferentCard />
       <ControlledFoundationCard />

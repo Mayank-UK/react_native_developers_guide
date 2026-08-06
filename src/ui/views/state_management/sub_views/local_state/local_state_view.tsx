@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { Pressable } from 'react-native';
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../../../design-system';
+import { Box, Button, Text } from '../../../../components';
+import { useTheme } from '../../../../design-system';
 import { Section, Code, Pill } from '../../../../components';
 import {
   CounterActionType,
@@ -22,7 +23,7 @@ import {
  */
 export function LocalStateView() {
   return (
-    <ScreenScaffold title="Local State" subtitle="useState, useReducer & Context — the built-in primitives.">
+    <ScreenScaffold title="Local State">
       <LocalStateCard />
       <ContextCard />
     </ScreenScaffold>

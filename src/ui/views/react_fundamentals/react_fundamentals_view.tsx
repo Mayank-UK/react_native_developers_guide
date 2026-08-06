@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code } from '../../components';
 import {
   useCounterState,
@@ -33,7 +34,6 @@ export function ReactFundamentalsView() {
   return (
     <ScreenScaffold
       title="React Fundamentals"
-      subtitle="The mental model behind every screen in this app"
     >
       <IntroCard />
       <ReactVsRnCard />

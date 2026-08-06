@@ -1,4 +1,4 @@
-import { Box } from '../src/ui/design-system';
+import { Box } from '../src/ui/components';
 import { ScreenScaffold, LinkCard } from '../src/ui/components';
 import { ROUTES, RoutePaths } from '../src/ui/navigation/routes';
 
@@ -14,9 +14,12 @@ export default function HubScreen() {
   const items = ROUTES.filter(
     (r) =>
       r.path !== RoutePaths.about &&
-      // keep section hubs, drop their sub-screens (`/ui/...`, `/state-management/...`)
+      // keep section hubs, drop their sub-screens (`/ui/...`, `/state-management/...`, `/device-features/...`)
       !(r.path !== RoutePaths.ui && r.path.startsWith('/ui/')) &&
-      !(r.path !== RoutePaths.stateManagement && r.path.startsWith('/state-management/')),
+      !(r.path !== RoutePaths.stateManagement && r.path.startsWith('/state-management/')) &&
+      !(r.path !== RoutePaths.deviceFeatures && r.path.startsWith('/device-features/')) &&
+      // images/assets lives under the UI section hub, not on home (see ui_hub_view)
+      r.path !== RoutePaths.imagesAssets,
   );
 
   return (

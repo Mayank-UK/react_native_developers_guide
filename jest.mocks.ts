@@ -187,8 +187,20 @@ jest.mock('expo-image-picker', () => {
       () => Promise.resolve(granted),
       () => Promise.resolve(granted),
     ],
+    useCameraPermissions: () => [
+      granted,
+      () => Promise.resolve(granted),
+      () => Promise.resolve(granted),
+    ],
     requestMediaLibraryPermissionsAsync: jest.fn(() => Promise.resolve(granted)),
+    requestCameraPermissionsAsync: jest.fn(() => Promise.resolve(granted)),
     launchImageLibraryAsync: jest.fn(() =>
+      Promise.resolve({
+        canceled: false,
+        assets: [{ uri: 'mock://img.jpg', width: 100, height: 100 }],
+      }),
+    ),
+    launchCameraAsync: jest.fn(() =>
       Promise.resolve({
         canceled: false,
         assets: [{ uri: 'mock://img.jpg', width: 100, height: 100 }],
@@ -212,6 +224,37 @@ jest.mock('expo-secure-store', () => {
       store.delete(k);
       return Promise.resolve();
     }),
+  };
+});
+
+// expo-sensors — native motion sensors; no JS implementation under jest. Mock
+// the small surface the sensors screen consumes: `setUpdateInterval` records
+// the cadence (so tests can assert it applied), `addListener` returns a
+// subscription with a `.remove()` teardown, and `isAvailableAsync` resolves
+// true. A passive listener list is kept so tests can drive a sample.
+jest.mock('expo-sensors', () => {
+  let intervalMs = 0;
+  // The jest-hoist babel plugin disallows out-of-scope identifiers in factory
+  // type annotations, so the listener callback's parameter name is mock-prefixed
+  // (the only name shape the plugin permits) and typed at runtime call sites.
+  const listeners = new Set<(mockReading: { x: number; y: number; z: number }) => void>();
+  return {
+    __esModule: true,
+    Accelerometer: {
+      setUpdateInterval: jest.fn((ms: number) => {
+        intervalMs = ms;
+      }),
+      getUpdateInterval: jest.fn(() => intervalMs),
+      addListener: jest.fn((cb: (reading: { x: number; y: number; z: number }) => void) => {
+        listeners.add(cb);
+        return { remove: jest.fn(() => { listeners.delete(cb); }) };
+      }),
+      removeAllListeners: jest.fn(() => { listeners.clear(); }),
+      isAvailableAsync: jest.fn(() => Promise.resolve(true)),
+    },
+    __emit(reading: { x: number; y: number; z: number }) {
+      listeners.forEach((cb) => cb(reading));
+    },
   };
 });
 

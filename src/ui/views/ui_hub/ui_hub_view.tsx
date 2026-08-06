@@ -1,4 +1,4 @@
-import { Box, Text } from '../../design-system';
+import { Box, Text } from '../../components';
 import { ScreenScaffold, LinkCard, Section } from '../../components';
 import { ROUTES, RoutePaths } from '../../navigation/routes';
 
@@ -7,7 +7,7 @@ import { ROUTES, RoutePaths } from '../../navigation/routes';
  * so there is no `_hooks.ts` file; the `ROUTES.filter` below is a pure
  * derivation over the route table (the single source of truth), presentational.
  *
- * UI section index — the landing screen for `/ui`. Lists the five UI
+ * UI section index — the landing screen for `/ui`. Lists the UI
  * sub-screens (sourced from the route table) as `LinkCard`s (arrow affordance),
  * each navigating to its sub-screen.
  */
@@ -20,7 +20,8 @@ export function UiHubView() {
         r.path === RoutePaths.styling ||
         r.path === RoutePaths.interactive ||
         r.path === RoutePaths.responsive ||
-        r.path === RoutePaths.designSystem),
+        r.path === RoutePaths.designSystem ||
+        r.path === RoutePaths.imagesAssets),
   );
 
   return (

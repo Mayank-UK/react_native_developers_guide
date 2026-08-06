@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Text, useTheme } from '../../../../design-system';
+import { Box, Text } from '../../../../components';
+import { useTheme } from '../../../../design-system';
 import { Section, Code } from '../../../../components';
 import {
   DIRECTIONS,
@@ -14,6 +15,11 @@ import {
   useGapPicker,
   useStackToggle,
 } from './layout_hooks';
+
+/** One-off illustration dimensions for the LIVE flexbox demos. */
+const FLEX_PLAYGROUND_HEIGHT = 180;
+const FLEX_GROW_TRACK_HEIGHT = 60;
+const POSITION_PLAYGROUND_HEIGHT = 110;
 
 /**
  * LayoutView — a dumb structure. All picker state lives in the co-located hooks
@@ -35,7 +41,6 @@ export function LayoutView() {
   return (
     <ScreenScaffold
       title="Layout & Structure"
-      subtitle="Flexbox is THE layout system in React Native"
     >
       <FlexboxIsTheSystemCard />
       <FlexDirectionCard />
@@ -217,7 +222,7 @@ function JustifyAlignCard() {
         </ChipRow>
         <View
           style={{
-            height: 180,
+            height: FLEX_PLAYGROUND_HEIGHT,
             flexDirection: 'column',
             justifyContent: justify,
             alignItems: align,
@@ -262,7 +267,7 @@ function FlexGrowShrinkCard() {
         <View
           style={{
             flexDirection: 'row',
-            height: 60,
+            height: FLEX_GROW_TRACK_HEIGHT,
             gap: theme.spacing.xs,
             padding: theme.spacing.sm,
             backgroundColor: theme.colors.surfaceVariant,
@@ -353,7 +358,7 @@ function PositionZIndexCard() {
           <View
             style={{
               position: 'relative',
-              height: 110,
+              height: POSITION_PLAYGROUND_HEIGHT,
               backgroundColor: theme.colors.surfaceVariant,
               borderRadius: theme.radii.md,
               padding: theme.spacing.md,

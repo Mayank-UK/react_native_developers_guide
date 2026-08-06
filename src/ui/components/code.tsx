@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * Code — a collapsible code block. Ports the sibling web guide's `CodeBlock`:
@@ -11,7 +12,14 @@ import { Box, Text, useTheme } from '../design-system';
  *
  * Replaces the per-screen `Code` helper duplicated across 18 screens. The code
  * is passed as `children` (a template literal) to match the established call
- * convention; `tone` is kept for backward compatibility (tints the text).
+ * convention.
+ *
+ * `tone` tints ONLY the expanded body text (default uses the mono colour). It
+ * is intentionally kept narrow ('primary' | 'default') because the only view
+ * that meaningfully uses it is the React-fundamentals alphabet screen, which
+ * highlights inline RN tokens in the primary hue. Keep it limited to that
+ * affordance — don't grow it into a general palette mapper (use <Text tone>
+ * for that).
  */
 export interface CodeProps {
   children: string;
@@ -21,6 +29,7 @@ export interface CodeProps {
   caption?: string;
   /** Start expanded instead of collapsed. */
   defaultOpen?: boolean;
+  /** Tints the expanded body text only ('primary' highlights inline tokens). */
   tone?: 'primary' | 'default';
 }
 

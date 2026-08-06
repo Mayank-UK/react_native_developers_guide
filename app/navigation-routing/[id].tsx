@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Box, Card, Text } from '../../src/ui/design-system';
+import { Box, Card, Text } from '../../src/ui/components';
 import { ScreenScaffold } from '../../src/ui/components/screen-scaffold';
 
 /**

@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { ScreenScaffold } from '../../components/screen-scaffold';
 import { Section, Code, Pill } from '../../components';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import {
   ASSET_TYPE,
   CONTENT_FIT,
@@ -15,6 +15,10 @@ import {
   type AssetType,
   type ResizeMode,
 } from './images_assets_hooks';
+import { DarkPalette, Radii, Spacing } from '../../design-system/tokens';
+
+/** One-off illustration dimension: the expo-image LIVE demo tile height. */
+const DEMO_IMAGE_HEIGHT = 200;
 
 /**
  * ImagesAssetsView — a dumb structure. All React state + the simulated
@@ -27,7 +31,6 @@ export function ImagesAssetsView() {
   return (
     <ScreenScaffold
       title="Images, Icons, Splash & Assets"
-      subtitle="expo-image, app icon, splash, dynamic asset loading."
     >
       <ImageChoiceCard />
       <LiveImageLoadCard />
@@ -124,7 +127,7 @@ function LiveImageLoadCard() {
           cachePolicy="memory-disk"
           onLoad={demo.onLoad}
           onError={demo.onError}
-          style={{ width: '100%', height: 200, borderRadius: 8, backgroundColor: '#0b1220' }}
+          style={{ width: '100%', height: DEMO_IMAGE_HEIGHT, borderRadius: Radii.md, backgroundColor: DarkPalette.background }}
         />
         <Text variant="caption" tone="muted" style={{ fontFamily: 'monospace' }}>
           {demo.source.uri}
@@ -370,14 +373,14 @@ import hero from './assets/hero.png';             // assetType: 'bundled'`}</Cod
             mt="sm"
             radius="sm"
             style={{
-              height: 8,
+              height: Spacing.sm,
               backgroundColor: '#1f2a3d',
               overflow: 'hidden',
             }}
           >
             <Box
               style={{
-                height: 8,
+                height: Spacing.sm,
                 width: `${pct}%`,
                 backgroundColor: '#3b82f6',
               }}

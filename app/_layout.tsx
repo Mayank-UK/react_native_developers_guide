@@ -1,17 +1,19 @@
-import { useEffect } from 'react';
 import { Drawer } from 'expo-router/drawer';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, useTheme } from '../src/ui/design-system';
 import { useAppFonts } from '../src/ui/design-system/fonts';
-import { container } from '../src/core/container';
-import { createAppConfig } from '../src/core/config';
+// Side-effect import: wires the DI container synchronously at module-eval time,
+// before the Drawer (and any child screen) can mount. See bootstrap.ts.
+import '../src/core/container/bootstrap';
 import { AppDrawerContent } from '../src/ui/components';
 
 /**
- * Root layout — wires global providers (theme, safe-area, gesture handler) and
- * initializes the DI container from build-time config. Hosts an Expo Router
+ * Root layout — wires global providers (theme, safe-area, gesture handler). The
+ * DI container is initialized synchronously at module-eval time via the
+ * side-effect import of `src/core/container/bootstrap.ts` (see that file for
+ * why this replaced the old `useEffect` initialization). Hosts an Expo Router
  * Drawer as the root navigator so the app has a swipeable side menu (Home,
  * About, and section shortcuts) reachable from every screen via the hamburger
  * in ScreenScaffold or an edge swipe. The drawer uses a themed custom content
@@ -27,9 +29,6 @@ import { AppDrawerContent } from '../src/ui/components';
 function Bootstrap() {
   const { theme } = useTheme();
   const [fontsLoaded] = useAppFonts();
-  useEffect(() => {
-    container.initialize(createAppConfig());
-  }, []);
 
   // Hold first paint until the bundled font families are registered, so text
   // never flashes the system font.

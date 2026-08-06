@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { I18nManager } from 'react-native';
 import { I18n } from 'i18n-js';
 import { getLocales } from 'expo-localization';
@@ -208,10 +208,53 @@ export interface PluralSample {
   text: string;
 }
 
+/**
+ * Whether the JS engine provides `Intl.PluralRules`. Hermes (as of RN 0.79 /
+ * Expo SDK 53) ships `Intl.NumberFormat` + `Intl.DateTimeFormat` but NOT
+ * `Intl.PluralRules` — so `new Intl.PluralRules(tag)` throws
+ * "Cannot read property 'prototype' of undefined" on-device. Node and modern
+ * browsers do provide it. We prefer the real engine when present and fall back
+ * to the CLDR cardinal rules for the locales THIS screen teaches otherwise.
+ * Standard prod fix: register `@formatjs/intl-pluralrules` once at app root.
+ */
+export const HAS_INTL_PLURAL_RULES =
+  typeof Intl !== 'undefined' && typeof Intl.PluralRules === 'function';
+
+/**
+ * CLDR cardinal plural category for `count` under the engine's own rules.
+ * Exported so the fallback path is unit-testable independent of the engine.
+ */
+export function selectPluralCategory(tag: string, count: number): PluralCategory {
+  if (HAS_INTL_PLURAL_RULES) {
+    return new Intl.PluralRules(tag).select(count) as PluralCategory;
+  }
+  return fallbackPluralCategory(tag, count);
+}
+
+/**
+ * Engine-independent CLDR cardinal rules for the three locales this screen
+ * teaches. Used ONLY when `Intl.PluralRules` is unavailable (Hermes). English
+ * and Spanish share the one/other split; Arabic uses the full six-form rules.
+ */
+export function fallbackPluralCategory(tag: string, count: number): PluralCategory {
+  const n = Math.trunc(Number(count));
+  if (!tag.startsWith('ar')) {
+    return n === 1 ? 'one' : 'other';
+  }
+  // Arabic (CLDR cardinal): zero/one/two/few/many/other.
+  if (n === 0) return 'zero';
+  if (n === 1) return 'one';
+  if (n === 2) return 'two';
+  const mod100 = Math.abs(n) % 100;
+  if (mod100 >= 3 && mod100 <= 10) return 'few';
+  if (mod100 >= 11 && mod100 <= 99) return 'many';
+  return 'other';
+}
+
 /** Pick the correct plural phrase for `count` under `locale`'s rules. */
 export function pluralize(count: number, locale: Locale): PluralSample {
   const tag = LOCALES[locale].tag;
-  const category = new Intl.PluralRules(tag).select(count) as PluralCategory;
+  const category = selectPluralCategory(tag, count);
   const template = PLURAL_TEXT[locale][category] ?? PLURAL_TEXT[locale].other;
   return { category, text: template.replace('%{count}', String(count)) };
 }
@@ -262,9 +305,13 @@ export function useI18nPlayground(): I18nPlayground {
   const device = useMemo(() => deviceLocale(), []);
   const [locale, setLocaleState] = useState<Locale>(device.key);
 
-  // The engine's current locale follows React state. Setting it during render
-  // is the documented i18n-js pattern (the instance is a plain data holder).
-  i18n.locale = locale;
+  // The engine's current locale follows React state. The i18n-js instance is a
+  // plain data holder, but mutating it is a side effect — keep it OUT of the
+  // render body (the project enforces pure render; setState/mutation belongs in
+  // an effect) and apply it from a useEffect keyed on the selected locale.
+  useEffect(() => {
+    i18n.locale = locale;
+  }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);

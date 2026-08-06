@@ -1,6 +1,6 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
 import { Section, Code, Pill } from '../../components';
-import { Box, Button, Text } from '../../design-system';
+import { Box, Button, Text } from '../../components';
 import {
   LOCALE_OPTIONS,
   appIsRTL,
@@ -26,7 +26,6 @@ export function InternationalizationView() {
   return (
     <ScreenScaffold
       title="Internationalization (i18n)"
-      subtitle="Locales, translations, formatting, pluralization, RTL — the RN-standard stack."
     >
       <IntroCard />
       <DeviceLocaleCard />
@@ -344,6 +343,15 @@ const text = phrases[rules.select(n)].replace('%{count}', String(n));`}</Code>
           })}
         </Box>
       </Box>
+      <Text variant="caption" tone="muted">
+        Hermes (the RN JS engine) ships <Text style={{ fontFamily: 'monospace' }}>Intl.NumberFormat</Text> and{' '}
+        <Text style={{ fontFamily: 'monospace' }}>DateTimeFormat</Text> but{' '}
+        <Text style={{ fontWeight: '600' }}>not</Text>{' '}
+        <Text style={{ fontFamily: 'monospace' }}>Intl.PluralRules</Text> as of SDK 53 — this screen falls back to the
+        CLDR cardinal rules so the demo renders on-device. In production, register the{' '}
+        <Text style={{ fontFamily: 'monospace' }}>@formatjs/intl-pluralrules</Text> polyfill once at app root and the
+        real engine is used everywhere.
+      </Text>
     </Section>
   );
 }

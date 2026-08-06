@@ -1,7 +1,8 @@
 import { Pressable, View } from 'react-native';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 import { ROUTES, RoutePaths, type RouteMeta } from '../navigation/routes';
 
 /**

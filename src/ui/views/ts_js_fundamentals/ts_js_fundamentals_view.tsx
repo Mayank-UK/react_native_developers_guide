@@ -1,6 +1,7 @@
 import { StyleSheet, TextInput } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text, useTheme } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useVarLetConstDemo,
@@ -54,7 +55,6 @@ export function TsJsFundamentalsView() {
   return (
     <ScreenScaffold
       title="TypeScript & JavaScript Fundamentals"
-      subtitle="The JS + TS this React Native app is built from"
     >
       {/* JS core */}
       <IntroCard />

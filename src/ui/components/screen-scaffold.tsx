@@ -2,7 +2,8 @@ import { type ReactNode } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useNavigation, usePathname } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 import { ThemeToggle } from './theme-toggle';
 
 /**
@@ -17,8 +18,7 @@ import { ThemeToggle } from './theme-toggle';
  *    returns false at a section hub (the initial screen of its nested Stack),
  *    which would wrongly hide the back arrow there. The hamburger opens the
  *    root Drawer.
- *  - Title only — no subtitle (kept as an accepted-but-ignored prop so existing
- *    call sites don't break during the refactor).
+ *  - Title only — no subtitle (title-only header).
  *  - Right: a single `ThemeToggle` icon (light/dark).
  *
  * `scrollable={false}` renders the body in a plain `<View>` for screens that
@@ -26,8 +26,6 @@ import { ThemeToggle } from './theme-toggle';
  */
 export interface ScreenScaffoldProps {
   title: string;
-  /** Accepted for backward compatibility; NOT rendered (title-only header). */
-  subtitle?: string;
   scrollable?: boolean;
   children: ReactNode;
 }
@@ -40,11 +38,9 @@ type NavigationLike = {
 
 export function ScreenScaffold({
   title,
-  subtitle,
   scrollable = true,
   children,
 }: ScreenScaffoldProps) {
-  void subtitle; // title-only header by design
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation() as NavigationLike;
@@ -80,7 +76,7 @@ export function ScreenScaffold({
           center
           px="md"
           py="sm"
-          style={{ justifyContent: 'space-between', minHeight: 48 }}
+          style={{ justifyContent: 'space-between', minHeight: theme.spacing.xxl }}
         >
           <Box row gap="sm" center style={{ flexShrink: 1 }}>
             <Pressable

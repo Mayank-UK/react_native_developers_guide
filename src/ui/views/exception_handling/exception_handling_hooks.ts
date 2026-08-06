@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { container } from '../../../core/container';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
@@ -14,8 +14,10 @@ import {
   forwardNetworkFailure,
   mapExceptionToFailure,
 } from '../../../core/error-handling/guards';
+import { requireAt } from '../../../core/utils/arrays';
 import { useFailureToast } from '../../hooks/use-failure-toast';
 import { usePosts } from '../../hooks/use-posts';
+import { useWarningToast } from '../../hooks/use-warning-toast';
 
 /**
  * Exception-handling view logic — owns the two LIVE demos' state + behaviour so
@@ -50,18 +52,11 @@ export interface PipelineDemo {
 
 export function usePipelineDemo(): PipelineDemo {
   const { state, fetch } = usePosts();
-  const toast = useFailureToast();
+  // Surface non-blocking warnings from the live fetch exactly once per stable
+  // (kind+message) key — see useWarningToast for why a stable key is needed.
+  const toast = useWarningToast(state.status === 'loaded' ? state.warning : undefined);
   const [api, setApi] = useState<ApiScenario>(ApiScenario.Success);
   const [db, setDb] = useState<DbScenario>(DbScenario.Success);
-  const lastWarningRef = useRef<unknown>(null);
-
-  // Surface non-blocking warnings from the live fetch exactly once per value.
-  useEffect(() => {
-    if (state.status === 'loaded' && state.warning && state.warning !== lastWarningRef.current) {
-      toast.show(state.warning);
-      lastWarningRef.current = state.warning;
-    }
-  }, [state, toast]);
 
   const run = useCallback(
     (nextApi: ApiScenario, nextDb: DbScenario) => {
@@ -94,7 +89,7 @@ export interface ChainInspector {
 export function useChainInspector(): ChainInspector {
   const [idx, setIdx] = useState(2); // start on the chained one — most illustrative
   const examples = buildCompoundExamples();
-  const current = examples[idx]!;
+  const current = requireAt(examples, idx);
   return { idx, setIdx, examples, current };
 }
 
@@ -194,21 +189,23 @@ export function dbLabel(s: DbScenario): string {
 export function buildCompoundExamples(): ReadonlyArray<{ label: string; failure: Failure; note: string }> {
   const upstreamExc: AppException = new NetworkException('No internet connection');
   const dbError: AppDatabaseException = new AppDatabaseException('Cache read failed');
+  // Map once; reuse the resulting Failure for every branch (no double-mapping).
+  const upstreamFailure = mapExceptionToFailure(upstreamExc);
 
   return [
     {
       label: 'Blocking — empty cache',
-      failure: forwardNetworkFailure(upstreamExc).failure,
-      note: 'Remote failed AND the cache was empty. The upstream NetworkFailure is the whole story — one link.',
+      failure: forwardNetworkFailure(upstreamFailure).failure,
+      note: 'Remote failed AND the cache was empty. The upstream NetworkFailure is forwarded at its native Critical severity — the whole story in one link.',
     },
     {
       label: 'Non-blocking — stale cache + warning',
-      failure: new NetworkFailure('No internet connection'),
-      note: 'Remote failed but a cache was served. Result.Success carries this NetworkFailure as a non-blocking warning (data + soft notice in one value).',
+      failure: upstreamFailure.withSeverity(FailureSeverity.Warning),
+      note: 'Remote failed but a cache was served. The Critical NetworkFailure is DOWNGRADED to a Warning via withSeverity — Result.Success carries data + a non-blocking notice in one value, and severity matches how it is presented (toast).',
     },
     {
       label: 'Chained — cache read ALSO failed',
-      failure: chainedCacheFailure(dbError, mapExceptionToFailure(upstreamExc)).failure,
+      failure: chainedCacheFailure(dbError.message, upstreamFailure).failure,
       note: 'The worst case: remote failed, then the cache fallback threw too. A CacheFailure CHAINED on the NetworkFailure — Critical, and .chain reconstructs the whole story.',
     },
   ];
@@ -217,9 +214,9 @@ export function buildCompoundExamples(): ReadonlyArray<{ label: string; failure:
 export function buildCall(idx: number): string {
   return (
     [
-      'forwardNetworkFailure(networkExc).failure',
-      'success(posts, networkFailure)  // Result',
-      'chainedCacheFailure(dbError, networkFailure).failure',
+      'forwardNetworkFailure(upstreamFailure).failure',
+      'success(posts, upstreamFailure.withSeverity(Warning))',
+      'chainedCacheFailure(dbError.message, upstreamFailure).failure',
     ][idx] ?? ''
   );
 }

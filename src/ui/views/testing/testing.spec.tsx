@@ -39,7 +39,7 @@ describe('useTestExplorer', () => {
     const { result } = renderHook(() => useTestExplorer(), { wrapper });
     expect(result.current.filter).toBe('all');
     expect(result.current.visible).toHaveLength(SPECS.length);
-    expect(result.current.open.file).toBe('ui/design-system/components/button.spec.tsx');
+    expect(result.current.open.file).toBe('ui/components/button.spec.tsx');
   });
 
   it('filters by layer', () => {

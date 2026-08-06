@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Text } from '../../../../design-system';
+import { Box, Button, Text } from '../../../../components';
 import { Section, Code } from '../../../../components';
 import {
   ReduxProvider,
@@ -21,7 +21,7 @@ import {
  */
 export function ReduxView() {
   return (
-    <ScreenScaffold title="Redux Toolkit" subtitle="A single scoped store + unidirectional flow.">
+    <ScreenScaffold title="Redux Toolkit">
       <ReduxCard />
     </ScreenScaffold>
   );

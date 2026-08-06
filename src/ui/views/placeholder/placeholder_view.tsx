@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 
 /**
  * PlaceholderView — shown for topic routes that are on the backlog but not
@@ -18,7 +18,7 @@ export interface PlaceholderViewProps {
 export function PlaceholderView({ title }: PlaceholderViewProps) {
   const router = useRouter();
   return (
-    <ScreenScaffold title={title} subtitle="Coming soon">
+    <ScreenScaffold title={title}>
       <Card>
         <Box gap="sm">
           <Text variant="body">

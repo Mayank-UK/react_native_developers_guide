@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import { Section, Code, Pill } from '../../components';
 import { usePlatformDemo } from './platform_specific_hooks';
 
@@ -21,7 +21,6 @@ export function PlatformSpecificView() {
   return (
     <ScreenScaffold
       title="Platform-Specific Code"
-      subtitle="Platform.OS, .ios/.android extensions, config plugins — the standard RN escape hatch."
     >
       <IntroCard />
       <LivePlatformReadoutCard />

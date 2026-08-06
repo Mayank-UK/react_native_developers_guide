@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { Animated } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useAnimatedApiDemo,
@@ -11,6 +12,11 @@ import {
   // without a second import line into react-native-gesture-handler.
   GestureDetector,
 } from './animations_gestures_hooks';
+
+/** One-off illustration dimensions: the LIVE animated demo tiles. */
+const ANIMATED_API_TILE = 96;
+const REANIMATED_TILE = 110;
+const PAN_CARD_TILE = 96;
 
 /**
  * AnimationsGesturesView — a dumb structure. All state/behaviour lives in the
@@ -27,7 +33,6 @@ export function AnimationsGesturesView() {
   return (
     <ScreenScaffold
       title="Animations & Gestures"
-      subtitle="Animated API, Reanimated, gesture handling."
     >
       <TwoSystemsCard />
       <BuiltInAnimatedCard />
@@ -144,8 +149,8 @@ function BuiltInAnimatedCard() {
           <Animated.View
             testID="animated-api-box"
             style={{
-              width: 96,
-              height: 96,
+              width: ANIMATED_API_TILE,
+              height: ANIMATED_API_TILE,
               borderRadius: theme.radii.lg,
               backgroundColor: theme.colors.primary,
               transform: [{ scale: demo.scale }],
@@ -230,8 +235,8 @@ function ReanimatedCard() {
             testID="reanimated-box"
             style={[
               {
-                width: 110,
-                height: 110,
+                width: REANIMATED_TILE,
+                height: REANIMATED_TILE,
                 borderRadius: theme.radii.lg,
                 backgroundColor: theme.colors.primary,
               },
@@ -320,8 +325,8 @@ function GesturesCard() {
               testID="pan-card"
               style={[
                 {
-                  width: 96,
-                  height: 96,
+                  width: PAN_CARD_TILE,
+                  height: PAN_CARD_TILE,
                   borderRadius: theme.radii.md,
                   backgroundColor: theme.colors.primary,
                 },

@@ -3,7 +3,8 @@ import { ScreenScaffold } from '../../components/screen-scaffold';
 import { ShowError } from '../../components/show-error';
 import { ToastStack } from '../../components/toast';
 import { isBlocking } from '../../hooks/use-posts';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useLiveCrudDemo,
@@ -45,7 +46,6 @@ export function DatabaseHandlingView() {
   return (
     <ScreenScaffold
       title="Database Handling"
-      subtitle="Local persistence behind a DAO — the offline-first seam."
     >
       <IntroCard />
       <ArchitectureSpineCard />

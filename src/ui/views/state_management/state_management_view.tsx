@@ -1,4 +1,4 @@
-import { Box, Text } from '../../design-system';
+import { Box, Text } from '../../components';
 import { ScreenScaffold, LinkCard, Section, Code } from '../../components';
 import { ROUTES, RoutePaths } from '../../navigation/routes';
 
@@ -31,7 +31,6 @@ export function StateManagementHubView() {
   return (
     <ScreenScaffold
       title="State Management"
-      subtitle="Three kinds of state — three different tools. Pick by the shape of the data."
     >
       <IntroCard />
       <ThisAppServerStateCard />

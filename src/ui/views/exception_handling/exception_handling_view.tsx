@@ -2,7 +2,7 @@ import { ScreenScaffold } from '../../components/screen-scaffold';
 import { ShowError } from '../../components/show-error';
 import { ToastStack } from '../../components/toast';
 import { usePosts, isBlocking } from '../../hooks/use-posts';
-import { Box, Button, Text } from '../../design-system';
+import { Box, Button, Text } from '../../components';
 import { ApiScenario, API_SCENARIOS } from '../../../core/scenario/api-scenario';
 import { DbScenario, DB_SCENARIOS } from '../../../core/scenario/db-scenario';
 import { FailureSeverity } from '../../../core/error-handling/failures';
@@ -37,7 +37,6 @@ export function ExceptionHandlingView() {
   return (
     <ScreenScaffold
       title="Exception Handling"
-      subtitle="Engine error → AppException → Failure → Result — the two-stage pipeline."
     >
       <IntroCard />
       <PipelineDiagramCard />

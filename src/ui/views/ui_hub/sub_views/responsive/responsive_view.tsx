@@ -6,7 +6,8 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Text, useTheme } from '../../../../design-system';
+import { Box, Text } from '../../../../components';
+import { useTheme } from '../../../../design-system';
 import { Section, Code } from '../../../../components';
 import {
   breakpoint,
@@ -37,7 +38,6 @@ export function ResponsiveView() {
   return (
     <ScreenScaffold
       title="Responsive Layout"
-      subtitle="useWindowDimensions + conditional styles (the RN way)"
     >
       <NoTailwindCard />
       <WindowDimensionsCard />

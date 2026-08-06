@@ -1,6 +1,6 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
 import { Section, Code, Pill } from '../../components';
-import { Box, Text, Button } from '../../design-system';
+import { Box, Text, Button } from '../../components';
 import {
   NOTIFICATION_TRIGGERS,
   PERMISSION_STATUS,
@@ -32,7 +32,6 @@ export function NotificationsView() {
   return (
     <ScreenScaffold
       title="Notifications"
-      subtitle="Local + push notifications, permissions, channels."
     >
       <IntroCard />
       <PermissionsCard />

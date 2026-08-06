@@ -1,6 +1,6 @@
 import { Text as RNText, type TextProps, type TextStyle } from 'react-native';
-import { useTheme } from '../theme';
-import type { SpacingKey, TextVariantName } from '../tokens';
+import { useTheme } from '../design-system/theme';
+import type { Palette, SpacingKey, TextVariantName } from '../design-system/tokens';
 
 /**
  * Text — typography primitive. Variants map to the design-system type scale
@@ -18,6 +18,15 @@ export interface AppTextProps extends TextProps {
   mt?: SpacingKey;
   mb?: SpacingKey;
 }
+
+/** tone → palette key. Single source of truth for text colour mapping. */
+const TONE_TO_COLOR: Record<TextTone, keyof Palette> = {
+  default: 'text',
+  muted: 'textMuted',
+  primary: 'primary',
+  onPrimary: 'onPrimary',
+  danger: 'danger',
+};
 
 export function Text({
   variant = 'body',
@@ -39,16 +48,7 @@ export function Text({
     ...(v.uppercase && { textTransform: 'uppercase' }),
     ...(mt !== undefined && { marginTop: s[mt] }),
     ...(mb !== undefined && { marginBottom: s[mb] }),
-    color:
-      tone === 'muted'
-        ? theme.colors.textMuted
-        : tone === 'primary'
-          ? theme.colors.primary
-          : tone === 'onPrimary'
-            ? theme.colors.onPrimary
-            : tone === 'danger'
-              ? theme.colors.danger
-              : theme.colors.text,
+    color: theme.colors[TONE_TO_COLOR[tone]],
   };
   return <RNText style={[textStyle, style]} {...props} />;
 }

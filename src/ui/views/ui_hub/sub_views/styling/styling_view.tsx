@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Card, Text, useTheme } from '../../../../design-system';
+import { Box, Button, Card, Text } from '../../../../components';
+import { useTheme } from '../../../../design-system';
 import { Spacing, Radii, LightPalette, DarkPalette } from '../../../../design-system/tokens';
 import { Section, Code } from '../../../../components';
 import { paletteSwatches, useCopiedFlag } from './styling_hooks';
@@ -25,7 +26,7 @@ import { paletteSwatches, useCopiedFlag } from './styling_hooks';
  */
 export function StylingView() {
   return (
-    <ScreenScaffold title="Styling" subtitle="Plain JS objects, tokens, and themes">
+    <ScreenScaffold title="Styling">
       <IntroCard />
       <StyleSheetCard />
       <InlineVsStyleSheetCard />

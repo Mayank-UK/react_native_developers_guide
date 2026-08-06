@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react';
 import { container } from '../../../core/container';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
 import { useFailureToast } from '../../hooks/use-failure-toast';
 import { usePosts } from '../../hooks/use-posts';
+import { useWarningToast } from '../../hooks/use-warning-toast';
 
 /**
  * API-handling view logic — owns the live demo's state + behaviour so the view
@@ -39,16 +39,9 @@ export interface ApiHandlingDemo {
 
 export function useApiHandlingDemo(): ApiHandlingDemo {
   const { state, fetch } = usePosts();
-  const toast = useFailureToast();
-  const lastWarningRef = useRef<unknown>(null);
-
-  // Surface non-blocking warnings from the live fetch exactly once per value.
-  useEffect(() => {
-    if (state.status === 'loaded' && state.warning && state.warning !== lastWarningRef.current) {
-      toast.show(state.warning);
-      lastWarningRef.current = state.warning;
-    }
-  }, [state, toast]);
+  // Surface non-blocking warnings from the live fetch exactly once per stable
+  // (kind+message) key — see useWarningToast for why a stable key is needed.
+  const toast = useWarningToast(state.status === 'loaded' ? state.warning : undefined);
 
   const setScenario = (next: ApiScenario) => {
     container.setApiScenario(next);

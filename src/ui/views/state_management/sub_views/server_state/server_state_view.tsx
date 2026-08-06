@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Text } from '../../../../design-system';
+import { Box, Button, Text } from '../../../../components';
 import { Section, Code, Pill } from '../../../../components';
 import {
   SERVER_STATE_SCENARIOS,
@@ -21,7 +21,7 @@ import {
  */
 export function ServerStateView() {
   return (
-    <ScreenScaffold title="Server State" subtitle="TanStack Query — cache, retry, invalidation.">
+    <ScreenScaffold title="Server State">
       <ServerStateQueryCard />
     </ScreenScaffold>
   );

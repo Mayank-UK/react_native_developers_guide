@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
 import { Section, Code, Pill } from '../../components';
@@ -29,7 +29,6 @@ export function DependencyManagementView() {
   return (
     <ScreenScaffold
       title="Dependency Management"
-      subtitle="A hand-rolled service locator — wiring in one explicit, debuggable place."
     >
       <IntroCard />
       <ConceptCard />

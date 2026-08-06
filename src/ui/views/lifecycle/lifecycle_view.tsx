@@ -1,7 +1,11 @@
 import { View } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
+
+/** Standard accessible touch-target height (Apple HIG min = 44pt). */
+const TOUCH_TARGET_HEIGHT = 44;
 import {
   useDependencyPlayground,
   useMountOnlyDemo,
@@ -42,7 +46,6 @@ export function LifecycleView() {
   return (
     <ScreenScaffold
       title="Component Lifecycle"
-      subtitle="There are no class lifecycle methods in function components — only hooks"
     >
       <IntroCard />
       <PhasesCard />
@@ -323,6 +326,7 @@ function CleanupCard() {
 /* ------------------------------------------------------------------ */
 
 function LayoutEffectChild() {
+  const { theme } = useTheme();
   const { big, toggleBig, entries, clear, measuredWidth, setMeasuredWidth } =
     useLayoutEffectDemo();
 
@@ -340,10 +344,10 @@ function LayoutEffectChild() {
       <View
         onLayout={(e) => setMeasuredWidth(e.nativeEvent.layout.width)}
         style={{
-          height: 44,
+          height: TOUCH_TARGET_HEIGHT,
           width: big ? '100%' : 120,
           backgroundColor: '#2b6cb0',
-          borderRadius: 8,
+          borderRadius: theme.radii.md,
           alignItems: 'center',
           justifyContent: 'center',
         }}

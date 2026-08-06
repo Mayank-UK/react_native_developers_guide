@@ -117,17 +117,23 @@ export function createHttpClient(deps: HttpClientDeps): HttpClient {
     return retry.run(() => dispatch(current), current.url, logger);
   }
 
-  return {
-    async request<T>(req: HttpRequest): Promise<T> {
-      const json = await run(req);
-      return json as T;
-    },
-    get<T>(path: string): Promise<T> {
-      return this.request<T>({
-        url: `${config.baseUrl}${path}`,
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      });
-    },
-  };
+  // Note: define `request`/`get` as standalone named functions (closures over
+  // `run`/`config`) rather than as an object-literal method so that `this` is
+  // never relied upon — destructuring `const { get } = client` or passing
+  // `get` as a callback stays safe. Calling `request` directly here (no `this`)
+  // is what removes the historical footgun.
+  async function request<T>(req: HttpRequest): Promise<T> {
+    const json = await run(req);
+    return json as T;
+  }
+
+  function get<T>(path: string): Promise<T> {
+    return request<T>({
+      url: `${config.baseUrl}${path}`,
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+  }
+
+  return { request, get };
 }

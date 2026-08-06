@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
 import { Section, Code, Pill } from '../../components';
@@ -27,7 +27,6 @@ export function ArchitectureView() {
   return (
     <ScreenScaffold
       title="Architecture"
-      subtitle="Layering, the inward-dependency invariant, and one request through every layer."
     >
       <IntroCard />
       <DiagramCard />

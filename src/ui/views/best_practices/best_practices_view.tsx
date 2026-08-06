@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useVirtualizationLab,
@@ -30,7 +31,6 @@ export function BestPracticesView() {
   return (
     <ScreenScaffold
       title="Best Practices"
-      subtitle="Performance, accessibility, maintainability — grounded in this app."
       scrollable={false}
     >
       <IntroCard />

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { container } from '../../../core/container';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
+import { requireHead } from '../../../core/utils/arrays';
 import { usePosts } from '../../hooks/use-posts';
 
 /**
@@ -69,13 +70,13 @@ export function useLayerExplorer(
 ) {
   const [openLayer, setOpenLayer] = useState<string>('domain/');
   const [openFolder, setOpenFolder] = useState<string>('models/');
-  const layer = tree.find((l) => l.layer === openLayer) ?? tree[0]!;
-  const folder = layer.nodes.find((n) => n.folder === openFolder) ?? layer.nodes[0]!;
+  const layer = tree.find((l) => l.layer === openLayer) ?? requireHead(tree);
+  const folder = layer.nodes.find((n) => n.folder === openFolder) ?? requireHead(layer.nodes);
 
   const pickLayer = (l: string) => {
-    const found = tree.find((x) => x.layer === l) ?? tree[0]!;
+    const found = tree.find((x) => x.layer === l) ?? requireHead(tree);
     setOpenLayer(l);
-    setOpenFolder(found.nodes[0]!.folder);
+    setOpenFolder(requireHead(found.nodes).folder);
   };
 
   return { openLayer, openFolder, setOpenLayer, setOpenFolder, pickLayer, layer, folder };

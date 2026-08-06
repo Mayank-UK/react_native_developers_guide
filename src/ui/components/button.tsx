@@ -4,9 +4,9 @@ import {
   type ViewStyle,
   type TextStyle,
 } from 'react-native';
-import { useTheme } from '../theme';
+import { useTheme } from '../design-system/theme';
 import { Text } from './text';
-import type { RadiusKey } from '../tokens';
+import type { RadiusKey } from '../design-system/tokens';
 
 /**
  * Button — primary interactive primitive. Themed via the design system, with
@@ -48,12 +48,9 @@ export function Button({
   };
   const ghost: ViewStyle = { backgroundColor: 'transparent' };
 
-  const tone =
-    variant === 'filled'
-      ? 'onPrimary'
-      : variant === 'outline'
-        ? 'primary'
-        : 'primary';
+  // Filled → onPrimary (white text on the primary fill); outline/ghost → primary
+  // (the outline/border is also primary, so the label reads in the same hue).
+  const tone = variant === 'filled' ? 'onPrimary' : 'primary';
 
   return (
     <Pressable

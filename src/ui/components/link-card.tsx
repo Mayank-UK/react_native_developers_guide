@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { Animated, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * LinkCard — a topic/section navigation card. Ports the sibling web guide's

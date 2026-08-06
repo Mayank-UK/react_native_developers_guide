@@ -137,8 +137,7 @@ describe('safeRepositoryCall', () => {
 describe('chainedCacheFailure', () => {
   it('produces a Critical CacheFailure carrying the upstream failure', () => {
     const upstream = new NetworkFailure('net down');
-    const dbError = new AppDatabaseException('cache read failed');
-    const result = chainedCacheFailure(dbError, upstream);
+    const result = chainedCacheFailure('cache read failed', upstream);
     expect(result.ok).toBe(false);
     if (!result.ok) {
       const f = result.failure as CacheFailure;

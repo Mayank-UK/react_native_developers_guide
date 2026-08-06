@@ -1,6 +1,7 @@
 import { Pressable, View } from 'react-native';
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Card, Text, useTheme } from '../../../../design-system';
+import { Box, Button, Card, Text } from '../../../../components';
+import { useTheme } from '../../../../design-system';
 import {
   Spacing,
   Radii,
@@ -10,6 +11,10 @@ import {
 } from '../../../../design-system/tokens';
 import { Section, Code } from '../../../../components';
 import { paletteSwatches, modeWord, usePressedState } from './design_system_hooks';
+
+/** One-off illustration dimensions for the LIVE token galleries. */
+const SPACING_BAR_HEIGHT = 12;
+const RADIUS_SWATCH_SIZE = 52;
 
 /**
  * DesignSystemView — a dumb structure. The only non-presentational state (the
@@ -32,7 +37,6 @@ export function DesignSystemView() {
   return (
     <ScreenScaffold
       title="Design System"
-      subtitle="tokens → theme → primitives → screens"
     >
       <PipelineCard />
       <TokensCard />
@@ -103,8 +107,8 @@ function TokensCard() {
               <View key={name} style={{ gap: theme.spacing.xxs }}>
                 <View
                   style={{
-                    width: 48,
-                    height: 48,
+                    width: Spacing.xxl,
+                    height: Spacing.xxl,
                     borderRadius: theme.radii.md,
                     backgroundColor: hex,
                     borderWidth: 1,
@@ -135,7 +139,7 @@ function TokensCard() {
                 <Text variant="caption" style={{ width: 28 }}>
                   {String(Spacing[k])}
                 </Text>
-                <View style={{ height: 12, width: Spacing[k] * 2, backgroundColor: theme.colors.primary }} />
+                <View style={{ height: SPACING_BAR_HEIGHT, width: Spacing[k] * 2, backgroundColor: theme.colors.primary }} />
               </View>
             ))}
           </View>
@@ -150,8 +154,8 @@ function TokensCard() {
               <View
                 key={k}
                 style={{
-                  width: 52,
-                  height: 52,
+                  width: RADIUS_SWATCH_SIZE,
+                  height: RADIUS_SWATCH_SIZE,
                   backgroundColor: theme.colors.surfaceVariant,
                   borderColor: theme.colors.border,
                   borderWidth: 1,
@@ -255,7 +259,7 @@ function PrimitivesCard() {
             Box (token props) + Card:
           </Text>
           <Box row gap="sm" p="md" bg="surfaceVariant" radius="md">
-            <Box p="sm" bg="primary" radius="sm" style={{ width: 24, height: 24 }} />
+            <Box p="sm" bg="primary" radius="sm" style={{ width: Spacing.lg, height: Spacing.lg }} />
             <Text variant="small">Box p=&quot;md&quot; gap=&quot;sm&quot; radius=&quot;md&quot;</Text>
           </Box>
           <Card>

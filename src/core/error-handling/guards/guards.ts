@@ -159,21 +159,27 @@ export async function safeRepositoryCall<TResult>({
   }
 }
 
-/** Convenience: a Result representing a cache miss that should surface the upstream failure. */
-export function forwardNetworkFailure(cause: AppException): Failed {
-  return failed(mapExceptionToFailure(cause));
+/**
+ * Forward an ALREADY-MAPPED upstream Failure as a blocking `Failed` result.
+ * The caller (e.g. `serveFromCache`) maps the `AppException` once and reuses
+ * the resulting Failure for every branch (warning / forward / chained) — this
+ * helper must NOT take the raw `AppException` and re-map it, or the pipeline
+ * computes the same Failure twice.
+ */
+export function forwardNetworkFailure(upstream: Failure): Failed {
+  return failed(upstream);
 }
 
 /**
- * Used by the cache fallback: chain a CacheFailure on top of an upstream
- * failure. Marked Critical because the cache was the last resort and it
- * failed — there is nothing left to show the user.
+ * Chain a Critical `CacheFailure` on top of an ALREADY-MAPPED upstream
+ * Failure. Marked Critical because the cache was the last resort and it
+ * failed — there is nothing left to show the user. The db error is accepted
+ * as a message (not an `AppException`) so the helper does not implicitly map
+ * or discard anything; the caller owns the single mapping.
  */
 export function chainedCacheFailure(
-  dbError: AppDatabaseException,
+  dbMessage: string,
   upstream: Failure,
 ): Failed {
-  return failed(
-    new CacheFailure(dbError.message, upstream, FailureSeverity.Critical),
-  );
+  return failed(new CacheFailure(dbMessage, upstream, FailureSeverity.Critical));
 }

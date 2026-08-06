@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { success } from '../../../core/result';
 import { NetworkFailure } from '../../../core/error-handling/failures';
+import { requireAt, requireHead } from '../../../core/utils/arrays';
 
 /**
  * Testing view logic — owns the three LIVE interactive demos' state + the pure
@@ -108,7 +109,7 @@ export const SPECS: ReadonlyArray<SpecEntry> = [
     ].join('\n'),
   },
   {
-    file: 'ui/design-system/components/button.spec.tsx',
+    file: 'ui/components/button.spec.tsx',
     layer: 'ui',
     purpose: 'RNTL component test — renders the title, fires onPress, respects disabled, composes with Card/Text. (NEW — added with this screen.)',
     snippet: [
@@ -145,12 +146,12 @@ export interface TestExplorer {
 
 export function useTestExplorer(): TestExplorer {
   const [filter, setFilter] = useState<SpecFilter>('all');
-  const [openFile, setOpenFile] = useState<string>(SPECS[6]!.file);
+  const [openFile, setOpenFile] = useState<string>(requireAt(SPECS, 6).file);
   const visible = useMemo(
     () => (filter === 'all' ? SPECS : SPECS.filter((s) => s.layer === filter)),
     [filter],
   );
-  const open = SPECS.find((s) => s.file === openFile) ?? SPECS[0]!;
+  const open = SPECS.find((s) => s.file === openFile) ?? requireHead(SPECS);
   return { filter, setFilter, openFile, setOpenFile, visible, open };
 }
 

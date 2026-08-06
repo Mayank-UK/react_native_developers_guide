@@ -1,6 +1,7 @@
 import { Pressable, View } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useTestExplorer,
@@ -30,7 +31,6 @@ export function TestingView() {
   return (
     <ScreenScaffold
       title="Testing"
-      subtitle="Jest + React Native Testing Library, grounded in this app's real specs."
     >
       <IntroCard />
       <ToolingCard />
@@ -188,7 +188,7 @@ const LAYER_TEST_ROWS: ReadonlyArray<{
   {
     layer: 'ui/',
     shape: 'component + hook (RNTL)',
-    spec: 'ui/design-system/components/button.spec.tsx, ui/hooks/use-posts.spec.tsx',
+    spec: 'ui/components/button.spec.tsx, ui/hooks/use-posts.spec.tsx',
     note: 'Rendered with RNTL. Components are queried by text/role (how the user sees them); hooks are driven via renderHook and their async state machine is awaited with waitFor.',
   },
 ];
@@ -511,7 +511,7 @@ function LiveRntlPlaygroundCard() {
           </Box>
         </Box>
 
-        <Code>{`// src/ui/design-system/components/button.spec.tsx (excerpt):
+        <Code>{`// src/ui/components/button.spec.tsx (excerpt):
 render(
   <ThemeProvider>
     <Button title="+" onPress={fn} />

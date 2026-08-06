@@ -1,6 +1,7 @@
 import { TextInput } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Text, Button, useTheme } from '../../design-system';
+import { Box, Text, Button } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   INTEGRATION_STATUS,
@@ -32,7 +33,6 @@ export function ThirdPartyServicesView() {
   return (
     <ScreenScaffold
       title="Third-party Services"
-      subtitle="Analytics, crash reporting, auth, payments — behind ports, not raw SDKs."
     >
       <PortKeystoneCard />
       <AnalyticsCard />

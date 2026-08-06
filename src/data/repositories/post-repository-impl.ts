@@ -10,7 +10,7 @@ import {
   mapExceptionToFailure,
   safeRepositoryCall,
 } from '../../core/error-handling/guards';
-import { CacheFailure } from '../../core/error-handling/failures';
+import { FailureSeverity } from '../../core/error-handling/failures';
 import type { Post } from '../../domain/models/post';
 import type { PostRepository } from '../../domain/repositories/post-repository';
 import type { AppDatabase } from '../local/app-database';
@@ -27,9 +27,9 @@ import { toPost } from '../remote/dtos/post-dto';
  *   2. Cache the result locally (best-effort; a cache write failure is only
  *      logged, never surfaced to the user).
  *   3. On network/server failure, fall back to the local cache:
- *        - cache hit  → Success(posts, warning = networkFailure)   [non-blocking]
- *        - cache miss → Failed(networkFailure)                      [blocking]
- *        - cache read fails → Failed(CacheFailure ← networkFailure) [blocking, chained]
+ *        - cache hit  → Success(posts, warning = upstreamFailure.asWarning()) [non-blocking, Warning]
+ *        - cache miss → Failed(upstreamFailure)                       [blocking, Critical]
+ *        - cache read fails → Failed(CacheFailure ← upstreamFailure)  [blocking, chained, Critical]
  */
 export class PostRepositoryImpl implements PostRepository {
   private readonly remote: PostRemoteDataSource;
@@ -69,24 +69,32 @@ export class PostRepositoryImpl implements PostRepository {
       `Remote fetch failed (${cause.constructor.name}), falling back to cache`,
     );
 
+    // Map the upstream exception ONCE. The resulting Failure is reused for
+    // every branch: downgraded to Warning when stale cache is served (so
+    // severity matches the non-blocking presentation), or forwarded at its
+    // original Critical severity when there is nothing to show.
     const upstreamFailure = mapExceptionToFailure(cause);
 
     try {
       const cached = await this.local.getPosts();
       if (cached.length > 0) {
-        // Non-blocking: show stale data, warn the user.
-        return success(cached.map(toPost), upstreamFailure);
+        // Non-blocking: show stale data + a Warning (severity lowered because
+        // the failure is presented as a toast, not a full-screen error).
+        return success(
+          cached.map(toPost),
+          upstreamFailure.withSeverity(FailureSeverity.Warning),
+        );
       }
-      // No cache → surface the original upstream failure (blocking).
-      return forwardNetworkFailure(cause);
+      // No cache → surface the original upstream failure (blocking, Critical).
+      return forwardNetworkFailure(upstreamFailure);
     } catch (e) {
       const dbError =
         e instanceof AppDatabaseException
           ? e
           : new AppDatabaseException('Cache read failed', { cause: e });
-      const chained = new CacheFailure(dbError.message, upstreamFailure);
-      this.logger.error(`Cache fallback also failed:\n${chained.chain}`);
-      return chainedCacheFailure(dbError, upstreamFailure);
+      const result = chainedCacheFailure(dbError.message, upstreamFailure);
+      this.logger.error(`Cache fallback also failed:\n${result.failure.chain}`);
+      return result;
     }
   }
 }

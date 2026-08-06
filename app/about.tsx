@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../src/ui/components/screen-scaffold';
-import { Box, Card, Text } from '../src/ui/design-system';
+import { Box, Card, Text } from '../src/ui/components';
 
 /**
  * About — project overview + architecture summary. Linked from the hub and the
@@ -7,7 +7,7 @@ import { Box, Card, Text } from '../src/ui/design-system';
  */
 export default function AboutScreen() {
   return (
-    <ScreenScaffold title="About" subtitle="React Native Developer's Guide">
+    <ScreenScaffold title="About">
       <Card>
         <Box gap="sm">
           <Text variant="body">

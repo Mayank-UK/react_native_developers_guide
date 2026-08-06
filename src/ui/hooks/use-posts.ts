@@ -4,6 +4,7 @@ import type { Failure } from '../../core/error-handling/failures';
 import { FailureSeverity } from '../../core/error-handling/failures';
 import type { GetPostsUseCase } from '../../domain/usecases/get-posts-usecase';
 import { container } from '../../core/container';
+import { assertNever } from '../../core/utils/types';
 
 /**
  * usePosts — the React analogue of the Flutter `PostsBloc` / web guide's
@@ -35,6 +36,10 @@ function reducer(_state: PostsState, action: PostsAction): PostsState {
       return { status: 'loaded', posts: action.posts, warning: action.warning };
     case 'error':
       return { status: 'error', failure: action.failure };
+    default:
+      // Exhaustiveness: adding a new PostsAction variant without handling it
+      // here becomes a compile error.
+      assertNever(action);
   }
 }
 

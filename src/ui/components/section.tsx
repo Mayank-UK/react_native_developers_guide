@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import { View } from 'react-native';
-import { Box, Card, Text, useTheme } from '../design-system';
+import { Box, Card, Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * Section — a titled content block, the structural unit every topic screen is
@@ -26,8 +27,8 @@ export function Section({ title, explanation, children }: SectionProps) {
           {/* Left accent bar — the visual cue that this is a section heading. */}
           <View
             style={{
-              height: 24,
-              width: 4,
+              height: theme.spacing.lg,
+              width: theme.spacing.xs,
               borderRadius: theme.radii.full,
               backgroundColor: theme.colors.primary,
             }}

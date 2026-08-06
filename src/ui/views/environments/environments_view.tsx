@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Card, Text } from '../../design-system';
+import { Box, Button, Card, Text } from '../../components';
 import { isDev, isStaging, isProd } from '../../../core/config/app-config';
 import { Section, Code, Pill } from '../../components';
 import { useLiveResolved, useFlagPlayground } from './environments_hooks';
@@ -25,7 +25,6 @@ export function EnvironmentsView() {
   return (
     <ScreenScaffold
       title="Environments / Flavours"
-      subtitle="dev / staging / prod the standard Expo way — app.config.ts + EXPO_PUBLIC_* + EAS."
     >
       <IntroCard />
       <StandardWayCard />

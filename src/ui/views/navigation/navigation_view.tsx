@@ -1,7 +1,8 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Link } from 'expo-router';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { Section, Code, Pill } from '../../components';
 import {
   useImperativeNav,
@@ -28,7 +29,6 @@ export function NavigationRoutingView() {
   return (
     <ScreenScaffold
       title="Navigation & Routing"
-      subtitle="Expo Router — file-based routing, the React Native standard since 2023"
     >
       <IntroCard />
       <FileBasedRoutingCard />

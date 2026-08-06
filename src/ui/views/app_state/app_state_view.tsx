@@ -1,6 +1,6 @@
 import { ScreenScaffold } from '../../components/screen-scaffold';
 import { Section, Code, Pill } from '../../components';
-import { Box, Text } from '../../design-system';
+import { Box, Text } from '../../components';
 import {
   appStateLabel,
   backgroundExecutionMatrix,
@@ -28,7 +28,6 @@ export function AppStateView() {
   return (
     <ScreenScaffold
       title="App State & Backgrounding"
-      subtitle="AppState, the JS-thread freeze, and the limits of background execution."
     >
       <IntroCard />
       <AppStateValuesCard />

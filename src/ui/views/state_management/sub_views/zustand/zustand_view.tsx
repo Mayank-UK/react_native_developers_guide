@@ -1,5 +1,5 @@
 import { ScreenScaffold } from '../../../../components/screen-scaffold';
-import { Box, Button, Text } from '../../../../design-system';
+import { Box, Button, Text } from '../../../../components';
 import { Section, Code, Pill } from '../../../../components';
 import {
   useZustandControls,
@@ -18,7 +18,7 @@ import {
  */
 export function ZustandView() {
   return (
-    <ScreenScaffold title="Zustand" subtitle="A tiny selector-based store — no Provider needed.">
+    <ScreenScaffold title="Zustand">
       <ZustandCard />
     </ScreenScaffold>
   );

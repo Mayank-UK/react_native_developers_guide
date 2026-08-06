@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
-import { Box, Text, useTheme } from '../design-system';
+import { Box, Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * Pill — a compact rounded chip. Supports two shapes used across the app:

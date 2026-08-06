@@ -1,6 +1,6 @@
 import { View, type ViewProps, type ViewStyle } from 'react-native';
-import { useTheme } from '../theme';
-import type { SpacingKey, RadiusKey } from '../tokens';
+import { useTheme } from '../design-system/theme';
+import type { SpacingKey, RadiusKey } from '../design-system/tokens';
 
 /**
  * Box — the layout primitive (a themed `View` that knows about the spacing

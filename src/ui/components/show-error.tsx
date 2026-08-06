@@ -1,4 +1,5 @@
-import { Button, Card, Text, useTheme } from '../design-system';
+import { Button, Card, Text } from '.';
+import { useTheme } from '../design-system';
 
 /**
  * ShowError — full-screen blocking error. Shown when a Failure is *critical*

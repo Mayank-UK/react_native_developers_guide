@@ -1,8 +1,4 @@
-/** Design-system barrel export — the public surface screens consume. */
+/** Design-system barrel — theme + tokens only (components live in src/ui/components). */
 export { ThemeProvider } from './theme-provider';
 export { useTheme, useThemeTokens } from './theme';
-export { Text } from './components/text';
-export { Box } from './components/box';
-export { Button } from './components/button';
-export { Card } from './components/card';
 export type { Theme, ThemeMode, Palette } from './tokens';

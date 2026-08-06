@@ -1,6 +1,7 @@
 import { Pressable, View } from 'react-native';
 import { ScreenScaffold } from '../../components/screen-scaffold';
-import { Box, Button, Text, useTheme } from '../../design-system';
+import { Box, Button, Text } from '../../components';
+import { useTheme } from '../../design-system';
 import { ApiScenario } from '../../../core/scenario/api-scenario';
 import { DbScenario } from '../../../core/scenario/db-scenario';
 import type { Palette } from '../../design-system/tokens';
@@ -33,7 +34,6 @@ export function DebuggingView() {
   return (
     <ScreenScaffold
       title="Debugging"
-      subtitle="The 2026 RN toolkit, plus this app's own debug aids — live."
     >
       <IntroCard />
       <ToolingLandscapeCard />
